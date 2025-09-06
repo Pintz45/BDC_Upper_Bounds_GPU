@@ -1,5 +1,5 @@
 # BDC_Upper_Bounds_GPU
-This repository contains implementations for computing upper bounds on the capacity of the Binary Deletion Channel (BDC). The work extends a [previous approach](https://github.com/ittai-rubinstein/BDC_Upper_Bounds) based on the Blahut–Arimoto algorithm by adding several optimizations that allow the study of more challenging parameter regimes.
+This repository contains implementations for computing upper bounds on the capacity of the Binary Deletion Channel (BDC). The work extends a [previous approach](https://github.com/ittai-rubinstein/BDC_Upper_Bounds), by Ittai Rubinstein and Roni Con, based on the Blahut–Arimoto algorithm by adding several optimizations that allow the study of more challenging parameter regimes.
 
 To make the computation feasible for larger values of n and k, we employ new algorithmic and computational techniques:
 
