@@ -1,24 +1,24 @@
 # BDC_Upper_Bounds_GPU
 
-This repository contains GPU-accelerated implementations for computing **upper bounds on the capacity of the Binary Deletion Channel (BDC)**. The approach is based on [this]() work and extends a [previous implementation](https://github.com/ittai-rubinstein/BDC_Upper_Bounds) by Ittai Rubinstein and Roni Con, which itself is based on the **Blahut–Arimoto Algorithm (BAA)**.
+This repository contains GPU-accelerated implementations for computing **upper bounds on the capacity of the Binary Deletion Channel (BDC)** using the **Blahut-Arimoto Algorithm (BAA)**. The approach is based on [this](https://drive.google.com/file/d/1MRj3cMk6i8SwJJRPuWjB2aq8FFVTBwXA/view) work and extends a [previous implementation](https://github.com/ittai-rubinstein/BDC_Upper_Bounds) by Ittai Rubinstein and Roni Con.
 
 The main contributions of this repository are:
 - Several algorithmic optimizations of BAA for the BDC.
 - Massive GPU parallelization using CUDA.
-- The ability to study significantly more challenging parameter regimes than previously possible.
+- The ability to study more challenging parameter regimes than previously possible.
 
 ---
 
 ## Problem Setting
 
-We study a binary deletion channel denoted by \( W_{n,k} \):
+We study a binary deletion channel denoted by BDC_{n,k}:
 
-- An input binary string of length \( n \) is transmitted.
-- The channel uniformly at random selects a subset of \( k \) positions.
+- An input binary string of length n is transmitted.
+- The channel uniformly at random selects a subset of k positions.
 - The selected bits are kept (in order), while the remaining bits are deleted.
-- The output is a binary string of length \( k \).
+- The output is a binary string of length k .
 
-The goal is to compute upper bounds on the channel capacity of \( W_{n,k} \) and, through some theoretical results (see [this]()), upper bounds for the classic binary deletion channel of deletion probability d.
+The goal is to compute upper bounds on the channel capacity of BDC_{n,k} and, through some theoretical results (see [this](https://drive.google.com/file/d/1MRj3cMk6i8SwJJRPuWjB2aq8FFVTBwXA/view)), upper bounds for the classic binary deletion channel of deletion probability d.
 
 ---
 
@@ -26,16 +26,16 @@ The goal is to compute upper bounds on the channel capacity of \( W_{n,k} \) and
 
 ### `backend/`
 
-This folder contains the full implementation of the optimized Blahut–Arimoto algorithm for the channel \( W_{n,k} \).
+This folder contains the full implementation of the optimized Blahut–Arimoto algorithm for the channel BDC_{n,k}.
 
 #### `BAA.cu`
 - Implements the optimized Blahut–Arimoto algorithm for the binary deletion channel.
 - Includes GPU-specific optimizations and parallelization.
-- For a more in-depth discussion of the implementation, follow the [this]() paper and read the comments in the code.
+- For a more in-depth discussion of the implementation, follow the [this](https://drive.google.com/file/d/1MRj3cMk6i8SwJJRPuWjB2aq8FFVTBwXA/view) paper and read the comments in the code.
 
 #### `generate_bit_transition_cache.cpp`
 - Generates cache files named `cache_n_k`, stored in the `transition_counts/` folder.
-- Each cache file encodes a matrix where the entry corresponding to strings \( (x, y) \) counts how many times the \( k \)-bit string `y` appears as a subsequence of the \( n \)-bit string `x`.
+- Each cache file encodes a matrix where the entry corresponding to strings (x, y) counts how many times the k-bit string `y` appears as a subsequence of the n-bit string `x`.
 - These cache files are used to efficiently compute transition probabilities between input strings `x` and output strings `y`, as described in the underlying paper.
 
 #### `utils.cc` and `cache_io.h`
@@ -64,6 +64,16 @@ This folder contains the full implementation of the optimized Blahut–Arimoto a
 
 ---
 
+## generating the cache files
+
+### 1. Run:
+Run the executable `generate_bit_transition_cache`:
+```bash
+./generate_bit_transition_cache n k
+```
+If you are doing simulations to estimate for the channel BDC_{n',k'} run the above line of code with n = k = (n'+1)/2
+
+
 ## Running the Blahut–Arimoto Algorithm
 
 ### 1. Configure Parameters
@@ -82,14 +92,26 @@ Compile the CUDA code using `nvcc`:
 ```bash
 nvcc -arch=? --extended-lambda -std=c++17 backend/*.cc backend/*.cu -o test_bit_baa
 ```
-Replace ? with the appropriate architecture of your GPU. For example, RTX 5090: use sm_89.
+Replace ? with the appropriate architecture of your GPU. For example, if you have a RTX 5090, use sm_89.
 
 ### 3. Run
 Run the executable:
 ```bash
 ./test_bit_baa
 ```
-[Here](https://drive.google.com/drive/folders/17jwDnhdhlL6CTP9mE2dC7aoKNJ81NfeF) you can find the (almost) optimal input distributions for C_{29,k} and C_{31,k}. As explained before, If you want to run a simulation starting from one of this distributions, add the distribution file to the folder "distributions" and turn the "read_from_file" flag to value "true" when running the file "test_bit_baa.cu".
+
+## Downloading Input Distributions
+
+[Here](https://drive.google.com/drive/folders/17jwDnhdhlL6CTP9mE2dC7aoKNJ81NfeF) you can find (almost) optimal input distributions for \( C_{29,k} \) and \( C_{31,k} \).
+
+Note that the distribution files for C_{31,k} are large (approximately **11 GB** each).
+
+To start a simulation from one of these distributions:
+1. Download the desired distribution file.
+2. Place it in the `distributions/` folder.
+3. Set the `read_from_file` flag to `true` in `test_bit_baa.cu`.
+4. Run the program as usual.
+
 
 
 
