@@ -1,6 +1,6 @@
 # BDC_Upper_Bounds_GPU
 
-This repository contains GPU-accelerated implementations for computing **upper bounds on the capacity of the Binary Deletion Channel (BDC)** using the **Blahut-Arimoto Algorithm (BAA)**. The approach is based on [this](https://jmlribeiro.github.io/bdc-baa.pdf) work and extends a [previous implementation](https://github.com/ittai-rubinstein/BDC_Upper_Bounds) by Ittai Rubinstein and Roni Con.
+This repository contains GPU-accelerated implementations for computing **upper bounds on the capacity of the Binary Deletion Channel (BDC)** using the **Blahut-Arimoto Algorithm (BAA)**. The approach is based on [this](https://jmlribeiro.github.io/bdc-baa.pdf) work.
 
 The main contributions of this repository are:
 - Several algorithmic optimizations of BAA for the BDC.
@@ -102,7 +102,7 @@ Run the executable:
 
 ## Downloading Input Distributions
 
-[Here](https://drive.google.com/drive/folders/17jwDnhdhlL6CTP9mE2dC7aoKNJ81NfeF) you can find (almost) optimal input distributions for \( C_{29,k} \) and \( C_{31,k} \).
+[Here](https://drive.google.com/drive/folders/17jwDnhdhlL6CTP9mE2dC7aoKNJ81NfeF) you can find (almost) optimal input distributions for  C_{29,k} and C_{31,k}.
 
 Note that the distribution files for C_{31,k} are large (approximately **11 GB** each).
 
